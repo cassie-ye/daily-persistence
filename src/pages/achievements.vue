@@ -8,7 +8,6 @@
 -->
 <!-- src/pages/achievements.vue -->
 <script setup lang="ts">
-
 const achievements = useAchievements()
 
 // 成就类型
@@ -58,7 +57,7 @@ function getLevelClass(level: string) {
 </script>
 
 <template>
-  <div>
+  <div class="pb-16">
     <h1 class="mb-6 text-2xl font-bold">
       成就墙
     </h1>

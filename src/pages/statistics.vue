@@ -364,7 +364,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="pb-16">
     <h1 class="mb-6 text-2xl font-bold">
       数据统计
     </h1>

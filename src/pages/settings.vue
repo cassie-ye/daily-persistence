@@ -57,7 +57,7 @@ function clearData() {
 </script>
 
 <template>
-  <div>
+  <div class="pb-16">
     <h1 class="mb-6 text-2xl font-bold">
       设置
     </h1>
@@ -89,7 +89,7 @@ function clearData() {
 
           <div>
             <label class="mb-2 block text-sm font-medium">已解锁的主题</label>
-            <div class="grid grid-cols-2 gap-2 ">
+            <div class="grid grid-cols-2 gap-2">
               <div
                 v-for="theme in settings.unlockedThemes"
                 :key="theme"

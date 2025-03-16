@@ -124,7 +124,7 @@ function saveCheckIn() {
 </script>
 
 <template>
-  <div>
+  <div class="pb-16">
     <!-- 添加计划按钮 -->
     <div class="mb-4 flex justify-end">
       <button

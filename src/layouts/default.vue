@@ -31,8 +31,10 @@
     </header>
 
     <!-- 主要内容区域 -->
-    <main class="mx-auto max-w-7xl p-4">
-      <RouterView />
+    <main class="mx-auto max-w-7xl p-4 pb-20">
+      <div class="router-view-container">
+        <RouterView />
+      </div>
     </main>
 
     <!-- 底部导航栏（移动端） -->

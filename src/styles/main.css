@@ -27,6 +27,11 @@ html.dark {
   color-scheme: dark;
 }
 
+/* 确保页面底部有足够的内边距 */
+.router-view-container {
+  padding-bottom: 80px;
+}
+
 #nprogress {
   pointer-events: none;
 }
