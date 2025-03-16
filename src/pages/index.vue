@@ -282,6 +282,7 @@ function saveCheckIn() {
                 <input
                   v-model="newCheckIn.time"
                   type="time"
+                  step="1"
                   class="w-full input"
                   required
                 >
