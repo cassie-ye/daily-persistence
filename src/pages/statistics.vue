@@ -63,14 +63,30 @@ function updateHeatmap() {
   if (!heatmapChart)
     return
 
-  // 获取过去一年的数据
-  const now = new Date()
+  // 获取所有打卡日期并计数
+  const dateCountMap: Record<string, number> = {}
+  checkIns.value.forEach((checkIn) => {
+    dateCountMap[checkIn.date] = (dateCountMap[checkIn.date] || 0) + 1
+  })
+
+  // 生成过去一年的日期数据
+  const endDate = new Date()
+  const startDate = new Date()
+  startDate.setFullYear(endDate.getFullYear() - 1)
+
+  // 设置日历范围 - 修复日期格式
+  const startDateStr = formatDate(startDate)
+
   const data: [string, number][] = []
-  for (let i = 0; i < 365; i++) {
-    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
-    const dateStr = date.toISOString().split('T')[0]
-    const count = checkIns.value.filter(c => c.date === dateStr).length
-    data.unshift([dateStr, count])
+  let currentDate = new Date(startDate)
+  while (currentDate <= endDate) {
+    const dateStr = formatDate(currentDate)
+    const count = dateCountMap[dateStr] || 0
+    data.push([dateStr, count])
+    // 修改日期，避免无限循环
+    const nextDate = new Date(currentDate)
+    nextDate.setDate(nextDate.getDate() + 1)
+    currentDate = nextDate
   }
 
   heatmapChart.setOption({
@@ -94,7 +110,7 @@ function updateHeatmap() {
     },
     visualMap: {
       min: 0,
-      max: 10,
+      max: 5,
       calculable: true,
       orient: 'horizontal',
       left: 'center',
@@ -109,12 +125,12 @@ function updateHeatmap() {
       left: 30,
       right: 30,
       cellSize: ['auto', 20],
-      range: data[0][0],
+      range: `${startDateStr}`,
       itemStyle: {
         borderWidth: 0.5,
         borderColor: '#e0d6f0',
       },
-      yearLabel: { show: false },
+      yearLabel: { show: true },
     },
     series: {
       type: 'heatmap',
@@ -133,11 +149,19 @@ function updateLineChart() {
   const now = new Date()
   const dates: string[] = []
   const counts: number[] = []
+
+  // 创建日期到打卡次数的映射
+  const dateCountMap: Record<string, number> = {}
+  checkIns.value.forEach((checkIn) => {
+    dateCountMap[checkIn.date] = (dateCountMap[checkIn.date] || 0) + 1
+  })
+
+  // 生成过去30天的日期
   for (let i = 29; i >= 0; i--) {
     const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
-    const dateStr = date.toISOString().split('T')[0]
+    const dateStr = formatDate(date)
     dates.push(dateStr)
-    counts.push(checkIns.value.filter(c => c.date === dateStr).length)
+    counts.push(dateCountMap[dateStr] || 0)
   }
 
   lineChart.setOption({
@@ -179,7 +203,14 @@ function updateLineChart() {
       type: 'category',
       data: dates,
       axisLabel: {
-        formatter: (value: string) => value.slice(5), // 只显示月-日
+        formatter: (value: string) => {
+          if (value && value.length >= 5) {
+            return value.slice(5) // 只显示月-日
+          }
+          return value
+        },
+        interval: 'auto',
+        rotate: 45,
       },
       axisLine: {
         lineStyle: {
@@ -257,7 +288,9 @@ function updatePieChart() {
   // 统计心情分布
   const moodCounts: Record<string, number> = {}
   checkIns.value.forEach((checkIn) => {
-    moodCounts[checkIn.mood] = (moodCounts[checkIn.mood] || 0) + 1
+    if (checkIn.mood) {
+      moodCounts[checkIn.mood] = (moodCounts[checkIn.mood] || 0) + 1
+    }
   })
 
   const moodMap: Record<string, string> = {
@@ -268,7 +301,7 @@ function updatePieChart() {
     excited: '兴奋 🤩',
   }
 
-  const data = Object.entries(moodCounts).map(([mood, count], index) => ({
+  const pieData = Object.entries(moodCounts).map(([mood, count], index) => ({
     name: moodMap[mood] || mood,
     value: count,
     itemStyle: {
@@ -297,17 +330,27 @@ function updatePieChart() {
     legend: {
       orient: 'horizontal',
       bottom: 0,
+      left: 'center',
       textStyle: {
         color: '#666',
       },
+      formatter: (name: string) => {
+        const item = pieData.find(d => d.name === name)
+        return `${name}: ${item ? item.value : 0}次`
+      },
+      icon: 'circle',
+      itemWidth: 10,
+      itemHeight: 10,
+      itemGap: 20,
+      show: true,
     },
     series: [
       {
         name: '心情分布',
         type: 'pie',
         radius: ['40%', '70%'],
-        center: ['50%', '55%'],
-        avoidLabelOverlap: false,
+        center: ['50%', '50%'],
+        avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
           borderColor: '#fff',
@@ -317,14 +360,10 @@ function updatePieChart() {
         },
         label: {
           show: false,
-          position: 'center',
         },
         emphasis: {
           label: {
-            show: true,
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#333',
+            show: false,
           },
           itemStyle: {
             shadowBlur: 20,
@@ -334,7 +373,7 @@ function updatePieChart() {
         labelLine: {
           show: false,
         },
-        data,
+        data: pieData,
       },
     ],
   })
