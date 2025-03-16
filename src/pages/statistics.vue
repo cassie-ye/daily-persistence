@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { Calendar, DataLine, PieChart } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
-import { getCheckInTrend, updateStatistics } from '~/composables/statistics'
+import { getCheckInTrend, getHeatmapData, updateStatistics } from '~/composables/statistics'
 
 const checkIns = useCheckIns()
 const statistics = useStatistics()
@@ -63,31 +63,17 @@ function updateHeatmap() {
   if (!heatmapChart)
     return
 
-  // 获取所有打卡日期并计数
-  const dateCountMap: Record<string, number> = {}
-  checkIns.value.forEach((checkIn) => {
-    dateCountMap[checkIn.date] = (dateCountMap[checkIn.date] || 0) + 1
-  })
+  // 使用getHeatmapData获取热力图数据
+  const data = getHeatmapData()
 
-  // 生成过去一年的日期数据
+  // 生成过去一年的日期范围
   const endDate = new Date()
   const startDate = new Date()
   startDate.setFullYear(endDate.getFullYear() - 1)
 
-  // 设置日历范围 - 修复日期格式
+  // 设置日历范围
   const startDateStr = formatDate(startDate)
-
-  const data: [string, number][] = []
-  let currentDate = new Date(startDate)
-  while (currentDate <= endDate) {
-    const dateStr = formatDate(currentDate)
-    const count = dateCountMap[dateStr] || 0
-    data.push([dateStr, count])
-    // 修改日期，避免无限循环
-    const nextDate = new Date(currentDate)
-    nextDate.setDate(nextDate.getDate() + 1)
-    currentDate = nextDate
-  }
+  const endDateStr = formatDate(endDate)
 
   heatmapChart.setOption({
     title: {
@@ -125,12 +111,22 @@ function updateHeatmap() {
       left: 30,
       right: 30,
       cellSize: ['auto', 20],
-      range: `${startDateStr}`,
+      range: [startDateStr, endDateStr],
       itemStyle: {
         borderWidth: 0.5,
         borderColor: '#e0d6f0',
       },
       yearLabel: { show: true },
+      dayLabel: {
+        firstDay: 1, // 从周一开始
+        nameMap: 'cn',
+      },
+      monthLabel: {
+        nameMap: 'cn',
+        fontSize: 9,
+        align: 'center',
+        margin: 15,
+      },
     },
     series: {
       type: 'heatmap',
