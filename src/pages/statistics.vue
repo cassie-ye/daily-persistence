@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { Calendar, DataLine, PieChart } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
-import { updateStatistics } from '~/composables/statistics'
+import { getCheckInTrend, updateStatistics } from '~/composables/statistics'
 
 const checkIns = useCheckIns()
 const statistics = useStatistics()
@@ -146,23 +146,9 @@ function updateLineChart() {
     return
 
   // 获取过去30天的数据
-  const now = new Date()
-  const dates: string[] = []
-  const counts: number[] = []
-
-  // 创建日期到打卡次数的映射
-  const dateCountMap: Record<string, number> = {}
-  checkIns.value.forEach((checkIn) => {
-    dateCountMap[checkIn.date] = (dateCountMap[checkIn.date] || 0) + 1
-  })
-
-  // 生成过去30天的日期
-  for (let i = 29; i >= 0; i--) {
-    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
-    const dateStr = formatDate(date)
-    dates.push(dateStr)
-    counts.push(dateCountMap[dateStr] || 0)
-  }
+  const trendData = getCheckInTrend()
+  const dates = trendData.dates
+  const counts = trendData.counts
 
   lineChart.setOption({
     title: {
@@ -210,7 +196,7 @@ function updateLineChart() {
           return value
         },
         interval: 'auto',
-        rotate: 45,
+        rotate: 30,
       },
       axisLine: {
         lineStyle: {
@@ -348,8 +334,8 @@ function updatePieChart() {
       {
         name: '心情分布',
         type: 'pie',
-        radius: ['40%', '70%'],
-        center: ['50%', '50%'],
+        radius: ['35%', '65%'],
+        center: ['50%', '45%'],
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -501,7 +487,7 @@ onUnmounted(() => {
             </el-tooltip>
           </div>
         </template>
-        <div ref="pieChartRef" class="h-80 w-full" />
+        <div ref="pieChartRef" class="h-96 w-full" />
       </el-card>
     </div>
   </div>
