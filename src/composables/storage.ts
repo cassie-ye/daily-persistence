@@ -11,6 +11,9 @@ const STORAGE_KEYS = {
 
 // 创建响应式存储
 export function usePlans() {
+  if (!localStorage) {
+    return []
+  }
   const plans = ref<Plan[]>(JSON.parse(localStorage.getItem(STORAGE_KEYS.PLANS) || '[]'))
 
   watch(plans, (newPlans) => {
@@ -21,6 +24,9 @@ export function usePlans() {
 }
 
 export function useCheckIns() {
+  if (!localStorage) {
+    return []
+  }
   const checkIns = ref<CheckIn[]>(JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECK_INS) || '[]'))
 
   watch(checkIns, (newCheckIns) => {
@@ -31,6 +37,9 @@ export function useCheckIns() {
 }
 
 export function useAchievements() {
+  if (!localStorage) {
+    return []
+  }
   const achievements = ref<Achievement[]>(JSON.parse(localStorage.getItem(STORAGE_KEYS.ACHIEVEMENTS) || '[]'))
 
   watch(achievements, (newAchievements) => {
@@ -60,6 +69,9 @@ export function useSettings() {
 }
 
 export function useStatistics() {
+  if (!localStorage) {
+    return []
+  }
   const defaultStats: Statistics = {
     totalCheckIns: 0,
     consecutiveDays: 0,

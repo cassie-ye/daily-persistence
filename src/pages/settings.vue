@@ -28,13 +28,15 @@ function getThemeClass(theme: string) {
 
 // 导出数据
 function exportData() {
-  const data = {
-    settings: localStorage.getItem('daily-persistence-settings'),
-    plans: localStorage.getItem('daily-persistence-plans'),
-    checkIns: localStorage.getItem('daily-persistence-checkins'),
-    achievements: localStorage.getItem('daily-persistence-achievements'),
-    statistics: localStorage.getItem('daily-persistence-statistics'),
-  }
+  const data = localStorage
+    ? {
+        settings: localStorage.getItem('daily-persistence-settings'),
+        plans: localStorage.getItem('daily-persistence-plans'),
+        checkIns: localStorage.getItem('daily-persistence-checkins'),
+        achievements: localStorage.getItem('daily-persistence-achievements'),
+        statistics: localStorage.getItem('daily-persistence-statistics'),
+      }
+    : {}
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
