@@ -171,7 +171,7 @@ function clearData() {
           关于
         </h2>
         <div class="text-sm text-gray-600 space-y-2 dark:text-gray-400">
-          <p>每日坚持 v1.0.0</p>
+          <p>Daily Persistence v1.0.0</p>
           <p>一个帮助你培养良好习惯的打卡应用</p>
           <p>
             <a

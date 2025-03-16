@@ -8,8 +8,8 @@
       <nav class="mx-auto h-16 max-w-7xl flex items-center justify-between px-4">
         <div class="flex items-center gap-4">
           <RouterLink to="/" class="flex items-center gap-2">
-            <div i-carbon-calendar class="text-2xl" />
-            <span class="text-lg font-bold">每日坚持</span>
+            <!-- <div i-carbon-calendar class="text-2xl" /> -->
+            <span class="text-lg font-bold">Daily Persistence</span>
           </RouterLink>
         </div>
 

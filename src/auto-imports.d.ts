@@ -432,6 +432,12 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly showConfirmDialog: UnwrapRef<typeof import('./composables/notification')['showConfirmDialog']>
+    readonly showError: UnwrapRef<typeof import('./composables/notification')['showError']>
+    readonly showInfo: UnwrapRef<typeof import('./composables/notification')['showInfo']>
+    readonly showNotification: UnwrapRef<typeof import('./composables/notification')['showNotification']>
+    readonly showSuccess: UnwrapRef<typeof import('./composables/notification')['showSuccess']>
+    readonly showWarning: UnwrapRef<typeof import('./composables/notification')['showWarning']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
