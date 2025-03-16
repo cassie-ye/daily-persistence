@@ -14,8 +14,34 @@ import {
 
 export default defineConfig({
   shortcuts: [
-    ['btn', 'px-4 py-1 rounded inline-block bg-teal-700 text-white cursor-pointer !outline-none hover:bg-teal-800 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50'],
-    ['icon-btn', 'inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600'],
+    // 基础组件
+    ['btn', 'px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors'],
+    ['btn-primary', 'px-4 py-2 rounded-lg text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors flex items-center justify-center'],
+    ['card', 'bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow'],
+    ['input', 'px-3 py-2 rounded-lg text-sm bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500'],
+
+    // 图标按钮
+    ['icon-btn', 'inline-flex justify-center items-center w-8 h-8 rounded-full transition-colors hover:bg-gray-100 dark:hover:bg-gray-800'],
+
+    // 开关组件
+    ['switch', 'relative inline-block w-12 h-6'],
+    ['switch-input', 'opacity-0 w-0 h-0'],
+    ['slider', 'absolute cursor-pointer inset-0 bg-gray-300 dark:bg-gray-600 rounded-full transition-all'],
+    ['slider-before', 'absolute content-[""] h-5 w-5 left-0.5 bottom-0.5 bg-white rounded-full transition-all'],
+    ['slider-checked', 'bg-blue-500'],
+    ['slider-checked-before', 'translate-x-6'],
+
+    // 布局相关
+    ['bg-base', 'bg-white dark:bg-dark'],
+    ['text-base', 'text-gray-900 dark:text-gray-100'],
+
+    // 成就相关
+    ['achievement-unlocked', 'hover:scale-105 hover:shadow-lg cursor-pointer'],
+    ['achievement-level-easy', 'bg-opacity-20 bg-green-500 text-green-500'],
+    ['achievement-level-medium', 'bg-opacity-20 bg-blue-500 text-blue-500'],
+    ['achievement-level-hard', 'bg-opacity-20 bg-purple-500 text-purple-500'],
+    ['achievement-level-expert', 'bg-opacity-20 bg-red-500 text-red-500'],
+    ['achievement-level-default', 'bg-opacity-20 bg-gray-500 text-gray-500'],
   ],
   presets: [
     presetUno(),
