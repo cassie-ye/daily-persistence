@@ -1,5 +1,7 @@
 <!-- src/pages/settings.vue -->
 <script setup lang="ts">
+import { Delete, Download, Setting } from '@element-plus/icons-vue'
+
 const settings = useSettings()
 
 // 获取主题名称
@@ -45,14 +47,19 @@ function exportData() {
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
+
+  showSuccess('数据导出成功')
 }
 
 // 清除数据
 function clearData() {
-  if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
+  showConfirmDialog('确定要清除所有数据吗？此操作不可恢复！').then(() => {
     localStorage.clear()
     window.location.reload()
-  }
+    showSuccess('数据已清除')
+  }).catch(() => {
+    // 用户取消操作
+  })
 }
 </script>
 
@@ -64,27 +71,26 @@ function clearData() {
 
     <div class="space-y-6">
       <!-- 主题设置 -->
-      <div class="card">
-        <h2 class="mb-4 text-lg font-bold">
-          主题设置
-        </h2>
+      <el-card class="w-full">
+        <template #header>
+          <div class="flex items-center">
+            <el-icon class="mr-2">
+              <Setting />
+            </el-icon>
+            <span class="text-lg font-bold">主题设置</span>
+          </div>
+        </template>
         <div class="space-y-4">
           <div>
             <label class="mb-2 block text-sm font-medium">主题模式</label>
-            <select
+            <el-select
               v-model="settings.theme"
-              class="w-full input"
+              class="w-full"
             >
-              <option value="light">
-                浅色模式
-              </option>
-              <option value="dark">
-                深色模式
-              </option>
-              <option value="system">
-                跟随系统
-              </option>
-            </select>
+              <el-option value="light" label="浅色模式" />
+              <el-option value="dark" label="深色模式" />
+              <el-option value="system" label="跟随系统" />
+            </el-select>
           </div>
 
           <div>
@@ -101,75 +107,87 @@ function clearData() {
             </div>
           </div>
         </div>
-      </div>
+      </el-card>
 
       <!-- 语言设置 -->
-      <div class="card">
-        <h2 class="mb-4 text-lg font-bold">
-          语言设置
-        </h2>
+      <el-card class="w-full">
+        <template #header>
+          <div class="text-lg font-bold">
+            语言设置
+          </div>
+        </template>
         <div>
-          <select
+          <el-select
             v-model="settings.language"
-            class="w-full input"
+            class="w-full"
           >
-            <option value="zh-CN">
-              简体中文
-            </option>
-            <option value="en-US">
-              English
-            </option>
-          </select>
+            <el-option value="zh-CN" label="简体中文" />
+            <el-option value="en-US" label="English" />
+          </el-select>
         </div>
-      </div>
+      </el-card>
 
       <!-- 通知设置 -->
-      <div class="card">
-        <h2 class="mb-4 text-lg font-bold">
-          通知设置
-        </h2>
+      <el-card class="w-full">
+        <template #header>
+          <div class="text-lg font-bold">
+            通知设置
+          </div>
+        </template>
         <div class="flex items-center justify-between">
           <span>启用通知提醒</span>
-          <label class="switch">
-            <input
-              v-model="settings.notifications"
-              type="checkbox"
-            >
-            <span class="slider" />
-          </label>
+          <el-switch
+            v-model="settings.notifications"
+            style="--el-switch-on-color: linear-gradient(to right, #c27aff, #e7a5af)"
+            inline-prompt
+            active-text="开"
+            inactive-text="关"
+          />
         </div>
-      </div>
+      </el-card>
 
       <!-- 数据管理 -->
-      <div class="card">
-        <h2 class="mb-4 text-lg font-bold">
-          数据管理
-        </h2>
+      <el-card class="w-full">
+        <template #header>
+          <div class="text-lg font-bold">
+            数据管理
+          </div>
+        </template>
         <div class="space-y-4">
           <div>
-            <button
-              class="w-full btn"
+            <el-button
+              class="w-full"
+              type="primary"
               @click="exportData"
             >
+              <el-icon class="mr-1">
+                <Download />
+              </el-icon>
               导出数据
-            </button>
+            </el-button>
           </div>
           <div>
-            <button
-              class="w-full text-red-500 btn"
+            <el-button
+              class="w-full"
+              type="danger"
               @click="clearData"
             >
+              <el-icon class="mr-1">
+                <Delete />
+              </el-icon>
               清除所有数据
-            </button>
+            </el-button>
           </div>
         </div>
-      </div>
+      </el-card>
 
       <!-- 关于 -->
-      <div class="card">
-        <h2 class="mb-4 text-lg font-bold">
-          关于
-        </h2>
+      <el-card class="w-full">
+        <template #header>
+          <div class="text-lg font-bold">
+            关于
+          </div>
+        </template>
         <div class="text-sm text-gray-600 space-y-2 dark:text-gray-400">
           <p>每日坚持 v1.0.0</p>
           <p>一个帮助你培养良好习惯的打卡应用</p>
@@ -184,7 +202,7 @@ function clearData() {
             </a>
           </p>
         </div>
-      </div>
+      </el-card>
     </div>
   </div>
 </template>
