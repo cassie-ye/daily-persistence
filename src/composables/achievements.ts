@@ -263,17 +263,25 @@ function showAchievementNotification(achievement: Achievement) {
     return
 
   if (Notification.permission === 'granted') {
-    new Notification('解锁新成就！', {
-      body: `恭喜你获得成就：${achievement.name}\n${achievement.description}`,
-      icon: '/favicon.ico',
+    ElNotification({
+      title: '解锁新成就！',
+      message: `恭喜你获得成就：${achievement.name}\n${achievement.description}`,
+      type: 'success',
+      duration: 4500,
+      position: 'top-right',
+      showClose: true,
     })
   }
   else if (Notification.permission !== 'denied') {
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        new Notification('解锁新成就！', {
-          body: `恭喜你获得成就：${achievement.name}\n${achievement.description}`,
-          icon: '/favicon.ico',
+        ElNotification({
+          title: '解锁新成就！',
+          message: `恭喜你获得成就：${achievement.name}\n${achievement.description}`,
+          type: 'success',
+          duration: 4500,
+          position: 'top-right',
+          showClose: true,
         })
       }
     })

@@ -52,10 +52,19 @@ function exportData() {
 
 // 清除数据
 function clearData() {
-  if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
-    localStorage.clear()
-    window.location.reload()
-  }
+  ElMessageBox.confirm(
+    '确定要清除所有数据吗？此操作不可恢复！',
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    },
+  )
+    .then(() => {
+      localStorage.clear()
+      window.location.reload()
+    })
 }
 </script>
 
