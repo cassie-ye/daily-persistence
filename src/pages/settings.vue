@@ -1,6 +1,7 @@
 <!-- src/pages/settings.vue -->
 <script setup lang="ts">
 const settings = useSettings()
+const isDark = useDark()
 
 // 获取主题名称
 function getThemeName(theme: string) {
@@ -74,17 +75,14 @@ function clearData() {
           <div>
             <label class="mb-2 block text-sm font-medium">主题模式</label>
             <select
-              v-model="settings.theme"
+              v-model="isDark"
               class="w-full input"
             >
-              <option value="light">
+              <option :value="false">
                 浅色模式
               </option>
-              <option value="dark">
+              <option :value="true">
                 深色模式
-              </option>
-              <option value="system">
-                跟随系统
               </option>
             </select>
           </div>
