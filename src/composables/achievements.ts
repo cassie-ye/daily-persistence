@@ -1,4 +1,4 @@
-import type { Achievement } from '~/types'
+import type { Achievement, CheckIn, Plan } from '~/types'
 import { useAchievements, useCheckIns, usePlans } from './storage'
 
 // 预定义成就列表
@@ -161,7 +161,7 @@ export function checkAchievements() {
   const today = now.toISOString().split('T')[0]
 
   // 获取所有打卡日期
-  const checkInDates = [...new Set(checkIns.value.map(c => c.date))].sort()
+  const checkInDates = [...new Set(checkIns.value.map((c: CheckIn) => c.date))].sort()
 
   // 计算连续打卡天数
   let consecutiveDays = 0
@@ -176,7 +176,7 @@ export function checkAchievements() {
   }
 
   // 检查连续打卡成就
-  const consecutiveAchievements = achievements.value.filter(a => a.type === 'consecutive')
+  const consecutiveAchievements = achievements.value.filter((a: Achievement) => a.type === 'consecutive')
   for (const achievement of consecutiveAchievements) {
     if (!achievement.unlockedAt && consecutiveDays >= achievement.requirement) {
       achievement.unlockedAt = now.toISOString()
@@ -186,7 +186,7 @@ export function checkAchievements() {
 
   // 检查累计打卡成就
   const totalCheckIns = checkInDates.length
-  const cumulativeAchievements = achievements.value.filter(a => a.type === 'cumulative')
+  const cumulativeAchievements = achievements.value.filter((a: Achievement) => a.type === 'cumulative')
   for (const achievement of cumulativeAchievements) {
     if (!achievement.unlockedAt && totalCheckIns >= achievement.requirement) {
       achievement.unlockedAt = now.toISOString()
@@ -195,10 +195,10 @@ export function checkAchievements() {
   }
 
   // 检查特定计划成就
-  const completedPlans = plans.value.filter((plan) => {
+  const completedPlans = plans.value.filter((plan: Plan) => {
     if (!plan.endDate)
       return false
-    const planCheckIns = checkIns.value.filter(c => c.planId === plan.id)
+    const planCheckIns = checkIns.value.filter((c: CheckIn) => c.planId === plan.id)
     const planDays = Math.ceil(
       (new Date(plan.endDate).getTime() - new Date(plan.startDate).getTime())
       / (1000 * 60 * 60 * 24),
@@ -206,7 +206,7 @@ export function checkAchievements() {
     return planCheckIns.length >= planDays
   })
 
-  const specificAchievements = achievements.value.filter(a => a.type === 'specific')
+  const specificAchievements = achievements.value.filter((a: Achievement) => a.type === 'specific')
   for (const achievement of specificAchievements) {
     if (!achievement.unlockedAt && completedPlans.length > 0) {
       achievement.unlockedAt = now.toISOString()
@@ -215,7 +215,7 @@ export function checkAchievements() {
   }
 
   // 检查特殊事件成就
-  const specialAchievements = achievements.value.filter(a => a.type === 'special')
+  const specialAchievements = achievements.value.filter((a: Achievement) => a.type === 'special')
   for (const achievement of specialAchievements) {
     if (achievement.unlockedAt)
       continue
@@ -231,7 +231,7 @@ export function checkAchievements() {
   }
 
   // 检查活跃度成就
-  const activeAchievements = achievements.value.filter(a => a.type === 'active')
+  const activeAchievements = achievements.value.filter((a: Achievement) => a.type === 'active')
   for (const achievement of activeAchievements) {
     if (achievement.unlockedAt)
       continue
@@ -248,7 +248,6 @@ export function checkAchievements() {
           break
         }
       }
-
       if (isActive) {
         achievement.unlockedAt = now.toISOString()
         showAchievementNotification(achievement)

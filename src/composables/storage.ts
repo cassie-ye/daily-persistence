@@ -12,7 +12,7 @@ const STORAGE_KEYS = {
 // 创建响应式存储
 export function usePlans() {
   if (!localStorage) {
-    return []
+    return ref<Plan[]>([])
   }
   const plans = ref<Plan[]>(JSON.parse(localStorage.getItem(STORAGE_KEYS.PLANS) || '[]'))
 
@@ -25,7 +25,7 @@ export function usePlans() {
 
 export function useCheckIns() {
   if (!localStorage) {
-    return []
+    return ref<CheckIn[]>([])
   }
   const checkIns = ref<CheckIn[]>(JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECK_INS) || '[]'))
 
@@ -38,7 +38,7 @@ export function useCheckIns() {
 
 export function useAchievements() {
   if (!localStorage) {
-    return []
+    return ref<Achievement[]>([])
   }
   const achievements = ref<Achievement[]>(JSON.parse(localStorage.getItem(STORAGE_KEYS.ACHIEVEMENTS) || '[]'))
 
@@ -70,7 +70,15 @@ export function useSettings() {
 
 export function useStatistics() {
   if (!localStorage) {
-    return []
+    return ref<Statistics>({
+      totalCheckIns: 0,
+      consecutiveDays: 0,
+      longestStreak: 0,
+      achievements: [],
+      moodDistribution: {},
+      weeklyActivity: Array.from<number>({ length: 7 }).fill(0),
+      monthlyActivity: Array.from<number>({ length: 30 }).fill(0),
+    })
   }
   const defaultStats: Statistics = {
     totalCheckIns: 0,
@@ -78,8 +86,8 @@ export function useStatistics() {
     longestStreak: 0,
     achievements: [],
     moodDistribution: {},
-    weeklyActivity: Array.from({ length: 7 }).fill(0),
-    monthlyActivity: Array.from({ length: 30 }).fill(0),
+    weeklyActivity: Array.from<number>({ length: 7 }).fill(0),
+    monthlyActivity: Array.from<number>({ length: 30 }).fill(0),
   }
 
   const statistics = ref<Statistics>(

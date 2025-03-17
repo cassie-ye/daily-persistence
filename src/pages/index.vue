@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import type { CheckIn, Plan } from '~/types'
+import { formatDate, formatTime, generateId, useCheckIns, usePlans } from '~/composables/storage'
 
 const plans = usePlans()
 const checkIns = useCheckIns()
 
 // 计算活跃的计划（未归档）
 const activePlans = computed(() => {
-  return plans.value.filter(plan => !plan.isArchived)
+  return plans.value.filter((plan: Plan) => !plan.isArchived)
 })
 
 // 添加/编辑计划相关
 const showAddPlanDialog = ref(false)
-const showConfirmDialog = ref(false)
+const confirmDialogVisibility = ref(false)
 const confirmCallback = ref<() => void>(() => {})
 const confirmMessage = ref('')
 const editingPlan = ref<Plan | null>(null)
@@ -26,7 +27,11 @@ const newPlan = ref<Partial<Plan>>({
 function showConfirm(message: string, callback: () => void) {
   confirmMessage.value = message
   confirmCallback.value = callback
-  showConfirmDialog.value = true
+  confirmDialogVisibility.value = true
+}
+
+function hideConfirmDialog() {
+  confirmDialogVisibility.value = false
 }
 
 function editPlan(plan: Plan) {
@@ -37,7 +42,7 @@ function editPlan(plan: Plan) {
 
 function archivePlan(plan: Plan) {
   showConfirm('确定要归档这个计划吗？', () => {
-    const index = plans.value.findIndex(p => p.id === plan.id)
+    const index = plans.value.findIndex((p: Plan) => p.id === plan.id)
     if (index !== -1) {
       plans.value[index] = {
         ...plan,
@@ -52,7 +57,7 @@ function savePlan() {
   const now = new Date().toISOString()
   if (editingPlan.value) {
     // 更新计划
-    const index = plans.value.findIndex(p => p.id === editingPlan.value!.id)
+    const index = plans.value.findIndex((p: Plan) => p.id === editingPlan.value!.id)
     if (index !== -1) {
       plans.value[index] = {
         ...editingPlan.value,
@@ -278,11 +283,10 @@ function saveCheckIn() {
           <form @submit.prevent="saveCheckIn">
             <div class="space-y-4">
               <div>
-                <label class="mb-1 block text-sm font-medium">打卡时间</label>
+                <label class="mb-1 block text-sm font-medium">时间</label>
                 <input
                   v-model="newCheckIn.time"
                   type="time"
-                  step="1"
                   class="w-full input"
                   required
                 >
@@ -314,31 +318,29 @@ function saveCheckIn() {
               </div>
 
               <div>
-                <label class="mb-1 block text-sm font-medium">天气（可选）</label>
+                <label class="mb-1 block text-sm font-medium">天气</label>
                 <select
                   v-model="newCheckIn.weather"
                   class="w-full input"
+                  required
                 >
                   <option value="sunny">
                     晴天 ☀️
                   </option>
                   <option value="cloudy">
-                    多云 ⛅
+                    多云 ⛅️
                   </option>
                   <option value="rainy">
-                    下雨 🌧️
+                    雨天 🌧️
                   </option>
                   <option value="snowy">
-                    下雪 🌨️
-                  </option>
-                  <option value="windy">
-                    刮风 💨
+                    雪天 🌨️
                   </option>
                 </select>
               </div>
 
               <div>
-                <label class="mb-1 block text-sm font-medium">备注（可选）</label>
+                <label class="mb-1 block text-sm font-medium">备注</label>
                 <textarea
                   v-model="newCheckIn.notes"
                   class="w-full input"
@@ -359,7 +361,7 @@ function saveCheckIn() {
                 type="submit"
                 class="btn-primary"
               >
-                打卡
+                保存
               </button>
             </div>
           </form>
@@ -370,18 +372,23 @@ function saveCheckIn() {
     <!-- 确认对话框 -->
     <Teleport to="body">
       <div
-        v-if="showConfirmDialog"
+        v-if="confirmDialogVisibility"
         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-        @click.self="showConfirmDialog = false"
+        @click.self="hideConfirmDialog"
       >
-        <div class="max-w-sm w-full rounded-lg bg-white p-6 dark:bg-gray-800">
-          <p class="mb-4 text-center">
+        <div class="max-w-md w-full rounded-lg bg-white p-6 dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-bold">
+            确认
+          </h2>
+
+          <p class="mb-6">
             {{ confirmMessage }}
           </p>
-          <div class="flex justify-center gap-2">
+
+          <div class="flex justify-end gap-2">
             <button
               class="btn"
-              @click="showConfirmDialog = false"
+              @click="hideConfirmDialog"
             >
               取消
             </button>
@@ -389,7 +396,7 @@ function saveCheckIn() {
               class="btn-primary"
               @click="() => {
                 confirmCallback()
-                showConfirmDialog = false
+                hideConfirmDialog()
               }"
             >
               确定

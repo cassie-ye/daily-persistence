@@ -8,6 +8,9 @@
 -->
 <!-- src/pages/achievements.vue -->
 <script setup lang="ts">
+import type { Achievement } from '~/types'
+import { formatDate, useAchievements } from '~/composables/storage'
+
 const achievements = useAchievements()
 
 // 成就类型
@@ -18,20 +21,20 @@ const achievementTypes = [
   { value: 'specific', label: '特定计划' },
   { value: 'special', label: '特殊事件' },
   { value: 'active', label: '活跃度' },
-]
+] as const
 
-const currentType = ref('all')
+const currentType = ref<'all' | Achievement['type']>('all')
 
 // 已解锁的成就
 const unlockedAchievements = computed(() => {
-  return achievements.value.filter(a => a.unlockedAt)
+  return achievements.value.filter((a: Achievement) => a.unlockedAt)
 })
 
 // 根据类型筛选成就
 const filteredAchievements = computed(() => {
   if (currentType.value === 'all')
     return achievements.value
-  return achievements.value.filter(a => a.type === currentType.value)
+  return achievements.value.filter((a: Achievement) => a.type === currentType.value)
 })
 
 // 检查成就是否已解锁
@@ -40,7 +43,7 @@ function isUnlocked(achievement: Achievement) {
 }
 
 // 获取成就等级样式
-function getLevelClass(level: string) {
+function getLevelClass(level: Achievement['level']) {
   switch (level) {
     case 'easy':
       return 'achievement-level-easy'
