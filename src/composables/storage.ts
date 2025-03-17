@@ -57,6 +57,10 @@ export function useSettings() {
     unlockedThemes: ['light', 'dark'],
   }
 
+  if (!localStorage) {
+    return ref<UserSettings>(defaultSettings)
+  }
+
   const settings = ref<UserSettings>(
     JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS) || JSON.stringify(defaultSettings)),
   )
@@ -69,17 +73,6 @@ export function useSettings() {
 }
 
 export function useStatistics() {
-  if (!localStorage) {
-    return ref<Statistics>({
-      totalCheckIns: 0,
-      consecutiveDays: 0,
-      longestStreak: 0,
-      achievements: [],
-      moodDistribution: {},
-      weeklyActivity: Array.from<number>({ length: 7 }).fill(0),
-      monthlyActivity: Array.from<number>({ length: 30 }).fill(0),
-    })
-  }
   const defaultStats: Statistics = {
     totalCheckIns: 0,
     consecutiveDays: 0,
@@ -88,6 +81,10 @@ export function useStatistics() {
     moodDistribution: {},
     weeklyActivity: Array.from<number>({ length: 7 }).fill(0),
     monthlyActivity: Array.from<number>({ length: 30 }).fill(0),
+  }
+
+  if (!localStorage) {
+    return ref<Statistics>(defaultStats)
   }
 
   const statistics = ref<Statistics>(

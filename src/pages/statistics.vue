@@ -438,7 +438,7 @@ onUnmounted(() => {
             </div>
             <el-tooltip content="展示过去一年的打卡记录，颜色越深表示打卡次数越多" placement="top">
               <el-icon class="ml-2 text-gray-400">
-                <el-icon-question />
+                <el-icon-question-filled />
               </el-icon>
             </el-tooltip>
           </div>
@@ -458,7 +458,7 @@ onUnmounted(() => {
             </div>
             <el-tooltip content="展示过去30天的打卡频率变化，帮助你了解自己的坚持情况" placement="top">
               <el-icon class="ml-2 text-gray-400">
-                <el-icon-question />
+                <el-icon-question-filled />
               </el-icon>
             </el-tooltip>
           </div>
@@ -478,7 +478,7 @@ onUnmounted(() => {
             </div>
             <el-tooltip content="统计你打卡时的心情分布，了解自己的情绪状态" placement="top">
               <el-icon class="ml-2 text-gray-400">
-                <el-icon-question />
+                <el-icon-question-filled />
               </el-icon>
             </el-tooltip>
           </div>
