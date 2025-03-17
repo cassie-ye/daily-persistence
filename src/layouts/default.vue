@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="bg-base min-h-screen text-base">
+  <div class="min-h-screen bg-base text-base">
     <!-- 顶部导航栏 -->
     <header class="supports-backdrop-blur:bg-white/60 sticky top-0 z-40 w-full backdrop-blur dark:bg-black/60">
       <nav class="mx-auto h-16 max-w-7xl flex items-center justify-between px-4">
@@ -38,7 +38,7 @@
     </main>
 
     <!-- 底部导航栏（移动端） -->
-    <footer class="bg-base fixed bottom-0 left-0 right-0 border-t border-gray-200 md:hidden dark:border-gray-800">
+    <footer class="fixed bottom-0 left-0 right-0 border-t border-gray-200 md:hidden dark:border-gray-800 bg-base">
       <nav class="h-14 flex justify-around">
         <RouterLink to="/" class="flex flex-1 flex-col items-center justify-center">
           <div i-carbon-home />

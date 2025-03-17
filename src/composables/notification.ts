@@ -53,4 +53,4 @@ export function showConfirmDialog(message: string, title: string = '提示', typ
     cancelButtonText: '取消',
     type,
   })
-} 
+}

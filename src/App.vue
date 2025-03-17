@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
+import { elementPlusLocale } from '~/modules/i18n'
 import { checkAchievements, initializeAchievements } from './composables/achievements'
 import { updateStatistics } from './composables/statistics'
 import { useCheckIns } from './composables/storage'
@@ -42,7 +43,9 @@ watch(checkIns, () => {
 </script>
 
 <template>
-  <RouterView />
+  <el-config-provider :locale="elementPlusLocale">
+    <RouterView />
+  </el-config-provider>
 </template>
 
 <style>
