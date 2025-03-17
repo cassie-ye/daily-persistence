@@ -1,3 +1,4 @@
+// @unocss-include
 import type { Achievement, CheckIn, Plan } from '~/types'
 import { useAchievements, useCheckIns, usePlans } from './storage'
 
@@ -40,7 +41,7 @@ const ACHIEVEMENTS: Achievement[] = [
     description: '连续打卡30天',
     type: 'consecutive',
     level: 'hard',
-    icon: 'i-carbon-forest',
+    icon: 'i-carbon-tree-view',
     requirement: 30,
     isHidden: false,
   },
@@ -116,7 +117,7 @@ const ACHIEVEMENTS: Achievement[] = [
     description: '在新年第一天打卡',
     type: 'special',
     level: 'easy',
-    icon: 'i-carbon-celebration',
+    icon: 'i-carbon-number-1',
     requirement: 1,
     isHidden: false,
   },
@@ -126,7 +127,7 @@ const ACHIEVEMENTS: Achievement[] = [
     description: '在生日当天打卡',
     type: 'special',
     level: 'easy',
-    icon: 'i-carbon-cake',
+    icon: 'i-carbon-gift',
     requirement: 1,
     isHidden: true,
   },
