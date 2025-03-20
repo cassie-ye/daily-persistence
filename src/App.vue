@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
+import { elementPlusLocale } from '~/modules/i18n'
 import { checkAchievements, initializeAchievements } from './composables/achievements'
 import { updateStatistics } from './composables/statistics'
 import { useCheckIns } from './composables/storage'
@@ -8,11 +9,11 @@ import { useCheckIns } from './composables/storage'
 // you can use this to manipulate the document head in any components,
 // they will be rendered correctly in the html results with vite-ssg
 useHead({
-  title: 'Vitesse',
+  title: 'Daily Persistence',
   meta: [
     {
       name: 'description',
-      content: 'Opinionated Vite Starter Template',
+      content: 'Daily Persistence',
     },
     {
       name: 'theme-color',
@@ -42,7 +43,9 @@ watch(checkIns, () => {
 </script>
 
 <template>
-  <RouterView />
+  <el-config-provider :locale="elementPlusLocale">
+    <RouterView />
+  </el-config-provider>
 </template>
 
 <style>

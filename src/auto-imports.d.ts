@@ -7,6 +7,8 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const ElMessageBox: typeof import('element-plus/es')['ElMessageBox']
+  const ElNotification: typeof import('element-plus/es')['ElNotification']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const checkAchievements: typeof import('./composables/achievements')['checkAchievements']
@@ -335,6 +337,7 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElNotification: UnwrapRef<typeof import('element-plus/es')['ElNotification']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly checkAchievements: UnwrapRef<typeof import('./composables/achievements')['checkAchievements']>
@@ -430,12 +433,6 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly showConfirmDialog: UnwrapRef<typeof import('./composables/notification')['showConfirmDialog']>
-    readonly showError: UnwrapRef<typeof import('./composables/notification')['showError']>
-    readonly showInfo: UnwrapRef<typeof import('./composables/notification')['showInfo']>
-    readonly showNotification: UnwrapRef<typeof import('./composables/notification')['showNotification']>
-    readonly showSuccess: UnwrapRef<typeof import('./composables/notification')['showSuccess']>
-    readonly showWarning: UnwrapRef<typeof import('./composables/notification')['showWarning']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>

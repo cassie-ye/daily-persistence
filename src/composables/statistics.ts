@@ -1,3 +1,4 @@
+import type { CheckIn } from '~/types'
 import { useCheckIns, useStatistics } from './storage'
 
 // 更新统计数据
@@ -9,7 +10,7 @@ export function updateStatistics() {
   const today = now.toISOString().split('T')[0]
 
   // 获取所有打卡日期
-  const checkInDates = [...new Set(checkIns.value.map(c => c.date))].sort()
+  const checkInDates = [...new Set(checkIns.value.map((c: CheckIn) => c.date))].sort()
 
   // 更新总打卡天数
   statistics.value.totalCheckIns = checkInDates.length
@@ -34,28 +35,28 @@ export function updateStatistics() {
 
   // 更新心情分布
   const moodCounts: Record<string, number> = {}
-  checkIns.value.forEach((checkIn) => {
+  checkIns.value.forEach((checkIn: CheckIn) => {
     moodCounts[checkIn.mood] = (moodCounts[checkIn.mood] || 0) + 1
   })
   statistics.value.moodDistribution = moodCounts
 
   // 更新周活跃度
-  const weeklyActivity = Array.from({ length: 7 }).fill(0)
+  const weeklyActivity = Array.from<number>({ length: 7 }).fill(0)
   for (let i = 0; i < 7; i++) {
     const date = new Date(now)
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
-    weeklyActivity[i] = checkIns.value.filter(c => c.date === dateStr).length
+    weeklyActivity[i] = checkIns.value.filter((c: CheckIn) => c.date === dateStr).length
   }
   statistics.value.weeklyActivity = weeklyActivity
 
   // 更新月活跃度
-  const monthlyActivity = Array.from({ length: 30 }).fill(0)
+  const monthlyActivity = Array.from<number>({ length: 30 }).fill(0)
   for (let i = 0; i < 30; i++) {
     const date = new Date(now)
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
-    monthlyActivity[i] = checkIns.value.filter(c => c.date === dateStr).length
+    monthlyActivity[i] = checkIns.value.filter((c: CheckIn) => c.date === dateStr).length
   }
   statistics.value.monthlyActivity = monthlyActivity
 }
@@ -97,7 +98,7 @@ export function getCheckInTrend() {
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
     dates.push(dateStr)
-    counts.push(checkIns.value.filter(c => c.date === dateStr).length)
+    counts.push(checkIns.value.filter((c: CheckIn) => c.date === dateStr).length)
   }
 
   return {
@@ -116,7 +117,7 @@ export function getHeatmapData() {
     const date = new Date(now)
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
-    const count = checkIns.value.filter(c => c.date === dateStr).length
+    const count = checkIns.value.filter((c: CheckIn) => c.date === dateStr).length
     data.unshift([dateStr, count])
   }
 

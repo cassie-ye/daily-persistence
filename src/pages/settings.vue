@@ -1,6 +1,7 @@
 <!-- src/pages/settings.vue -->
 <script setup lang="ts">
 const settings = useSettings()
+const isDark = useDark()
 
 // 获取主题名称
 function getThemeName(theme: string) {
@@ -51,10 +52,19 @@ function exportData() {
 
 // 清除数据
 function clearData() {
-  if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
-    localStorage.clear()
-    window.location.reload()
-  }
+  ElMessageBox.confirm(
+    '确定要清除所有数据吗？此操作不可恢复！',
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    },
+  )
+    .then(() => {
+      localStorage.clear()
+      window.location.reload()
+    })
 }
 </script>
 
@@ -74,17 +84,14 @@ function clearData() {
           <div>
             <label class="mb-2 block text-sm font-medium">主题模式</label>
             <select
-              v-model="settings.theme"
+              v-model="isDark"
               class="w-full input"
             >
-              <option value="light">
+              <option :value="false">
                 浅色模式
               </option>
-              <option value="dark">
+              <option :value="true">
                 深色模式
-              </option>
-              <option value="system">
-                跟随系统
               </option>
             </select>
           </div>
